@@ -240,6 +240,48 @@ legend span{font-weight:400;color:var(--muted)}
   .quick,.est-card,.callout{padding:24px}
   .brand img{height:64px}
 }
+/* Genesis AI assistant */
+.gen-btn{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:10px;padding:6px 18px 6px 6px;border:0;border-radius:999px;background:var(--navy);color:#fff;font:700 15px 'Archivo',sans-serif;letter-spacing:.02em;cursor:pointer;box-shadow:0 12px 30px rgba(8,22,35,.35);transition:transform .2s}
+.gen-btn:hover{transform:translateY(-2px);background:var(--navy-2)}
+.gen-btn img{width:48px;height:48px;border-radius:50%;border:2px solid var(--accent)}
+.gen-btn .dot{position:absolute;left:44px;top:8px;width:12px;height:12px;border-radius:50%;background:#3ccf6e;border:2px solid var(--navy)}
+.gen-btn small{display:block;font:500 12px 'Public Sans',sans-serif;color:#c8d3dd;letter-spacing:0}
+.gen-btn[aria-expanded="true"]{display:none}
+.gen-panel{position:fixed;right:20px;bottom:20px;z-index:61;width:390px;height:min(620px,calc(100vh - 40px));display:none;flex-direction:column;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(8,22,35,.35)}
+.gen-panel[data-open="true"]{display:flex}
+.gen-head{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--navy);color:#fff;border-bottom:3px solid var(--accent)}
+.gen-head img{width:44px;height:44px;border-radius:50%}
+.gen-id{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.25}
+.gen-id b{font:800 18px 'Archivo',sans-serif}
+.gen-id span{font-size:13px;color:#c8d3dd}
+.gen-close{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35);background:transparent;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gen-close:hover{border-color:var(--accent);color:var(--accent)}
+.gen-body{flex:1;overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:14px;background:var(--soft)}
+.gen-msg{display:flex;gap:8px;align-items:flex-end;max-width:100%}
+.gen-msg img{width:30px;height:30px;border-radius:50%;flex:none}
+.gen-txt{background:#fff;border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:10px 13px;font-size:15px;line-height:1.5;max-width:82%;overflow-wrap:anywhere}
+.gen-txt a{color:var(--navy);font-weight:600}
+.gen-msg.me{justify-content:flex-end}
+.gen-msg.me .gen-txt{background:var(--navy);border-color:var(--navy);color:#fff;border-radius:14px 14px 4px 14px}
+.gen-dots{display:flex;gap:5px;padding:4px 2px}
+.gen-dots i{width:7px;height:7px;border-radius:50%;background:var(--navy);opacity:.3;animation:genDot 1.2s infinite}
+.gen-dots i:nth-child(2){animation-delay:.2s}.gen-dots i:nth-child(3){animation-delay:.4s}
+@keyframes genDot{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.gen-sugs{display:flex;flex-wrap:wrap;gap:8px;padding:10px 16px 0;background:var(--soft)}
+.gen-sugs[hidden]{display:none}
+.gen-sugs button{min-height:36px;padding:0 14px;border-radius:999px;border:1.5px solid #c9d1da;background:#fff;color:var(--ink);font:600 13px 'Public Sans',sans-serif;cursor:pointer}
+.gen-sugs button:hover{border-color:var(--navy)}
+.gen-foot{display:flex;gap:8px;align-items:flex-end;padding:12px;border-top:1px solid var(--line);background:#fff}
+.gen-foot textarea{flex:1;min-height:44px;max-height:120px;resize:none;padding:11px 13px;border:1.5px solid #c9d1da;border-radius:10px;font:15px 'Public Sans',sans-serif;color:var(--ink)}
+.gen-foot textarea:focus{outline:3px solid rgba(224,165,38,.45);border-color:var(--navy)}
+.gen-send{width:44px;height:44px;flex:none;border:0;border-radius:10px;background:var(--accent);color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gen-send:disabled{opacity:.5;cursor:default}
+.gen-note{margin:0;padding:0 12px 10px;background:#fff;font-size:11.5px;color:var(--muted);text-align:center}
+@media (max-width:520px){
+  .gen-btn{right:12px;bottom:12px;padding:5px}
+  .gen-btn .label{display:none}
+  .gen-panel{right:8px;left:8px;bottom:8px;width:auto;height:min(82vh,620px)}
+}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
@@ -728,6 +770,149 @@ legend span{font-weight:400;color:var(--muted)}
   });
 
   document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
+
+<!-- Genesis AI assistant -->
+<button class="gen-btn" type="button" id="genOpen" aria-expanded="false" aria-controls="genPanel">
+  <img src="assets/genesis.svg" alt="" width="48" height="48"><span class="dot" aria-hidden="true"></span>
+  <span class="label">Ask Genesis<small>AI assistant · English / Español</small></span>
+</button>
+<section class="gen-panel" id="genPanel" role="dialog" aria-label="Chat with Genesis, AI assistant" data-open="false">
+  <div class="gen-head">
+    <img src="assets/genesis.svg" alt="" width="44" height="44">
+    <div class="gen-id"><b>Genesis</b><span>Asfalcem AI assistant · English / Español</span></div>
+    <button class="gen-close" type="button" id="genClose" aria-label="Close chat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="gen-body" id="genLog" role="log" aria-live="polite"></div>
+  <div class="gen-sugs" id="genSugs">
+    <button type="button" data-q="What services do you offer?">What services do you offer?</button>
+    <button type="button" data-q="I'd like a free estimate">Free estimate</button>
+    <button type="button" data-q="¿Me puedes atender en español?">Español</button>
+  </div>
+  <form class="gen-foot" id="genForm">
+    <textarea id="genInput" rows="1" placeholder="Type your question…" aria-label="Your message"></textarea>
+    <button class="gen-send" type="submit" id="genSend" aria-label="Send message"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </form>
+  <p class="gen-note">Genesis is an AI assistant and can make mistakes. For quotes, call (385) 371-0680.</p>
+</section>
+
+<script>
+(function () {
+  var API_URL = 'https://black-water-4ccb.yankeevictor73.workers.dev';
+  var ASSISTANT = 'genesis';
+  var GREETING = "Hi! I'm Genesis, the virtual assistant for Constructora Asfalcem 1981. I can help with remodeling, facade repair, architectural plans, engineering, surveying and free estimates. How can I help you today?\n¿Prefiere español? ¡También hablo español!";
+  var AVATAR = 'assets/genesis.svg';
+
+  var btn = document.getElementById('genOpen');
+  var panel = document.getElementById('genPanel');
+  var log = document.getElementById('genLog');
+  var form = document.getElementById('genForm');
+  var input = document.getElementById('genInput');
+  var send = document.getElementById('genSend');
+  var sugs = document.getElementById('genSugs');
+  var history = [];
+  var busy = false;
+  var started = false;
+
+  function format(text) {
+    var safe = String(text).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+    return safe
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\(?385\)?[\s.-]?371[\s.-]?0680/g, '<a href="tel:+13853710680">(385) 371-0680</a>')
+      .replace(/info@asfalcem\.com/g, '<a href="mailto:info@asfalcem.com">info@asfalcem.com</a>')
+      .replace(/\n/g, '<br>');
+  }
+
+  function add(text, mine) {
+    var row = document.createElement('div');
+    row.className = 'gen-msg' + (mine ? ' me' : '');
+    var bubble = document.createElement('div');
+    bubble.className = 'gen-txt';
+    bubble.innerHTML = format(text);
+    if (!mine) {
+      var av = document.createElement('img');
+      av.src = AVATAR; av.alt = ''; av.width = 30; av.height = 30;
+      row.appendChild(av);
+    }
+    row.appendChild(bubble);
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+    return row;
+  }
+
+  function typing() {
+    var row = document.createElement('div');
+    row.className = 'gen-msg';
+    row.innerHTML = '<img src="' + AVATAR + '" alt="" width="30" height="30"><div class="gen-txt"><span class="gen-dots" aria-label="Genesis is typing"><i></i><i></i><i></i></span></div>';
+    log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+    return row;
+  }
+
+  function setBusy(v) { busy = v; input.disabled = v; send.disabled = v; }
+
+  function open(v) {
+    panel.setAttribute('data-open', String(v));
+    btn.setAttribute('aria-expanded', String(v));
+    if (v) {
+      if (!started) { started = true; add(GREETING, false); }
+      setTimeout(function () { input.focus(); }, 60);
+    } else {
+      btn.focus();
+    }
+  }
+
+  btn.addEventListener('click', function () { open(true); });
+  document.getElementById('genClose').addEventListener('click', function () { open(false); });
+  panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') open(false); });
+
+  input.addEventListener('input', function () {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
+  });
+  sugs.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-q]');
+    if (b && !busy) ask(b.getAttribute('data-q'));
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = input.value.trim();
+    if (!text || busy) return;
+    input.value = '';
+    input.style.height = 'auto';
+    ask(text);
+  });
+
+  function ask(text) {
+    add(text, true);
+    sugs.hidden = true;
+    setBusy(true);
+    var wait = typing();
+    fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, assistant: ASSISTANT, history: history.slice(-12) })
+    })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (data) {
+        wait.remove();
+        if (!data || data.status !== 'success' || !data.response) throw new Error('bad response');
+        add(data.response, false);
+        history.push({ role: 'user', parts: [{ text: text }] });
+        history.push({ role: 'model', parts: [{ text: data.response }] });
+      })
+      .catch(function () {
+        wait.remove();
+        add("Sorry, I couldn't connect right now. Please call or text us at (385) 371-0680 or email info@asfalcem.com.\nLo siento, no pude conectarme. Llámenos al (385) 371-0680.", false);
+      })
+      .then(function () { setBusy(false); input.focus(); });
+  }
 })();
 </script>
 </body>
