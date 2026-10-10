@@ -164,9 +164,6 @@ h1,h2,h3,p{margin:0}
 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
 .about-media{position:relative}
 .about-media img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:6px}
-.badge{position:absolute;left:24px;right:24px;bottom:24px;background:var(--navy);color:#fff;border-radius:6px;padding:22px 24px;display:flex;gap:16px;align-items:center}
-.badge .disp{font-size:20px}
-.badge p:last-child{margin-top:2px;color:#c8d3dd;font-size:14px}
 .about-copy{display:flex;flex-direction:column;gap:28px}
 .about-copy .titles{display:flex;flex-direction:column;gap:14px}
 .about-copy .lead{color:var(--body);font-size:17px}
@@ -176,7 +173,7 @@ h1,h2,h3,p{margin:0}
 .why p:last-child{color:var(--muted);font-size:15px}
 
 /* Callouts */
-.callouts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.callouts{display:grid;grid-template-columns:1fr;gap:24px}
 .callout{border-radius:8px;padding:36px;display:flex;flex-direction:column;gap:12px}
 .callout h3{font-size:28px;color:var(--navy)}
 .callout p:not(.eyebrow){color:var(--body)}
@@ -250,7 +247,6 @@ legend span{font-weight:400;color:var(--muted)}
 <div class="topbar">
   <div class="wrap">
     <div class="topbar-left">
-      <span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Licensed &amp; insured · Lic. # <span class="ph">[LICENSE #]</span></span>
       <span>Serving Salt Lake City, UT &amp; surrounding counties</span>
     </div>
     <div style="display:flex;gap:18px;align-items:center">
@@ -516,16 +512,12 @@ legend span{font-weight:400;color:var(--muted)}
   <div class="wrap split">
     <div class="about-media">
       <img src="assets/img/about-crew.jpg" alt="Crew member cutting lumber on site" loading="lazy">
-      <div class="badge">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-        <div><p class="disp">Workmanship warranty</p><p><span class="ph" style="color:#fff">[X]</span>-year written warranty on every job</p></div>
-      </div>
     </div>
     <div class="about-copy">
       <div class="titles">
         <p class="eyebrow">Why Asfalcem</p>
         <h2 class="disp h2">Built right the first time — and backed in writing.</h2>
-        <p class="lead">Asfalcem 1981 LLC brings design, engineering and construction together under one roof. <span class="ph">[Add 2–3 lines about your story: when you started, your background and the work you’re proudest of.]</span></p>
+        <p class="lead">Asfalcem 1981 LLC brings design, engineering and construction together under one roof.</p>
       </div>
       <div class="why">
         <div><p class="disp">Licensed general contractor</p><p>Fully insured, with permits pulled under our license.</p></div>
@@ -539,20 +531,14 @@ legend span{font-weight:400;color:var(--muted)}
   </div>
 </section>
 
-<!-- Insurance & financing -->
-<section aria-label="Insurance and financing" style="padding:80px 0 0">
+<!-- Insurance claims -->
+<section aria-label="Insurance claims" style="padding:80px 0 0">
   <div class="wrap callouts">
     <div class="callout" style="background:#fbf3e0">
       <p class="eyebrow">Storm, fire or water damage?</p>
       <h3 class="disp">We work directly with your insurance adjuster.</h3>
       <p>Photo-documented damage reports, detailed repair estimates and emergency tarping or board-up while your claim is processed.</p>
       <a href="#estimate">Request a damage inspection →</a>
-    </div>
-    <div class="callout" style="background:#e8eef4">
-      <p class="eyebrow">Flexible financing</p>
-      <h3 class="disp">Start your project now, pay over time.</h3>
-      <p>Monthly payment options through <span class="ph">[FINANCING PARTNER]</span>, subject to credit approval. Ask about it during your estimate.</p>
-      <a href="#estimate">Ask about financing →</a>
     </div>
   </div>
 </section>
@@ -647,7 +633,6 @@ legend span{font-weight:400;color:var(--muted)}
           <span class="disp" style="font-size:24px;letter-spacing:.06em;color:#fff">ASFALCEM 1981</span>
         </div>
         <p style="max-width:36ch">Design–build contractor for remodeling, exterior repair, architecture, engineering and surveying.</p>
-        <p style="font-size:14px">Licensed GC # <span class="ph" style="color:#fff">[LICENSE #]</span> · Insured</p>
       </div>
       <div>
         <p class="disp foot-title">Residential</p>
