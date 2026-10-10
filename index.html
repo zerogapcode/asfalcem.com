@@ -1,10 +1,706 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>asfalcem.com</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Asfalcem 1981 Painting</title>
+<meta name="description" content="Asfalcem 1981 LLC: interior and exterior painting for homes and businesses. Request a free written estimate.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: paint-deck site. Navy ink on cool primer white, one gold brush stroke as the signature,
+   section heads set like swatch cards, alternating wide image / text bands. */
+:root {
+  --paper: #f4f6f7;
+  --panel: #ffffff;
+  --ink: #14304a;
+  --text: #22313d;
+  --muted: #5b6b78;
+  --line: #d7dee3;
+  --gold: #e0a526;
+  --gold-ink: #8a5f00;
+  --band: #14304a;
+  --band-text: #e9eef2;
+  --band-muted: #a9b9c6;
+  --shadow: 0 1px 2px rgb(20 48 74 / .06), 0 8px 24px rgb(20 48 74 / .08);
+
+  --f-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Public Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --gutter: clamp(16px, 4vw, 48px);
+  --max: 1200px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e1922; --panel: #15232f; --ink: #e8eef3; --text: #d3dce3; --muted: #93a4b2;
+    --line: #26394a; --gold: #eab140; --gold-ink: #f0c060; --band: #0a1520; --band-text: #e9eef2;
+    --band-muted: #93a4b2; --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e1922; --panel: #15232f; --ink: #e8eef3; --text: #d3dce3; --muted: #93a4b2;
+  --line: #26394a; --gold: #eab140; --gold-ink: #f0c060; --band: #0a1520; --band-text: #e9eef2;
+  --band-muted: #93a4b2; --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body {
+  margin: 0; background: var(--paper); color: var(--text);
+  font: 400 1.0625rem/1.65 var(--f-body);
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; border-radius: 2px; }
+.wrap { max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+
+h1, h2, h3 { font-family: var(--f-display); color: var(--ink); line-height: 1.02; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.8rem, 7vw, 5.6rem); font-weight: 850; font-stretch: 72%; letter-spacing: -.01em; text-transform: uppercase; }
+h2 { font-size: clamp(2.1rem, 4.6vw, 3.5rem); font-weight: 820; font-stretch: 75%; text-transform: uppercase; }
+h3 { font-size: 1.45rem; font-weight: 750; font-stretch: 85%; }
+p { margin: 0; max-width: 62ch; }
+.lead { font-size: 1.2rem; color: var(--muted); }
+
+/* Swatch-card eyebrow: the chip + code is how paint decks label a color */
+.eyebrow { display: inline-flex; align-items: center; gap: .6rem; font: 500 .78rem/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.eyebrow::before { content: ""; width: 1.1rem; height: 1.1rem; border-radius: 3px; background: var(--chip, var(--gold)); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .1); }
+
+/* Brush-stroke highlight under one word */
+.stroke { position: relative; white-space: nowrap; z-index: 0; }
+.stroke::after {
+  content: ""; position: absolute; z-index: -1; left: -.08em; right: -.12em; bottom: .02em; height: .34em;
+  background: var(--gold); border-radius: 40% 60% 55% 45% / 60% 40% 60% 40%; transform: rotate(-1.5deg);
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem; padding: .95rem 1.4rem;
+  font: 700 .95rem/1 var(--f-body); letter-spacing: .02em; text-decoration: none; border-radius: 4px;
+  border: 2px solid transparent; cursor: pointer; transition: transform .15s, background .15s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-gold { background: var(--gold); color: #14304a; }
+.btn-ghost { border-color: currentColor; color: var(--ink); background: transparent; }
+.arrow::after { content: "↗"; font-weight: 600; }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav { display: flex; align-items: center; gap: 1.5rem; min-height: 72px; }
+.brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; color: var(--ink); flex-shrink: 0; }
+.brand svg { width: 40px; height: 40px; }
+.brand-name { display: grid; line-height: 1; }
+.brand-name b { font: 850 1.45rem/1 var(--f-display); font-stretch: 100%; letter-spacing: .06em; }
+.brand-name small { font: 600 .62rem/1 var(--f-body); letter-spacing: .26em; color: var(--muted); margin-top: .3rem; }
+.nav-links { display: flex; gap: 1.6rem; margin-left: auto; list-style: none; padding: 0; margin-block: 0; }
+.nav-links a { text-decoration: none; font-weight: 600; font-size: .95rem; color: var(--text); }
+.nav-links a:hover { color: var(--gold-ink); }
+.nav-phone { font: 500 .9rem/1 var(--f-mono); text-decoration: none; color: var(--ink); white-space: nowrap; }
+.nav .btn { padding: .7rem 1rem; }
+.menu-btn { display: none; margin-left: auto; background: none; border: 2px solid var(--line); border-radius: 4px; padding: .5rem .7rem; color: var(--ink); font: 700 .85rem/1 var(--f-body); cursor: pointer; }
+
+/* ---------- Hero ---------- */
+.hero { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem); }
+.hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+.hero-copy { display: grid; gap: 1.5rem; min-width: 0; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: .8rem; }
+.hero-media { position: relative; min-width: 0; }
+.hero-media img { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; border-radius: 6px; box-shadow: var(--shadow); }
+.hero-badge {
+  position: absolute; left: -1rem; bottom: -1rem; background: var(--band); color: var(--band-text);
+  padding: 1rem 1.2rem; border-radius: 4px; display: grid; gap: .2rem; box-shadow: var(--shadow);
+}
+.hero-badge b { font: 850 2rem/1 var(--f-display); font-stretch: 75%; color: var(--gold); }
+.hero-badge span { font: 500 .72rem/1.3 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--band-muted); }
+
+.assurances { display: flex; flex-wrap: wrap; gap: .5rem 1.6rem; list-style: none; padding: 0; margin: .5rem 0 0; font-weight: 600; font-size: .92rem; color: var(--text); }
+.assurances li { display: flex; align-items: center; gap: .45rem; }
+.assurances li::before { content: ""; width: .5rem; height: .5rem; background: var(--gold); border-radius: 50%; }
+
+/* Fan-deck strip */
+.deck { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: clamp(2.5rem, 5vw, 4rem); border-radius: 6px; overflow: hidden; box-shadow: var(--shadow); }
+.chip { background: var(--c); color: var(--t, #fff); padding: 2.6rem .9rem .8rem; display: grid; gap: .15rem; min-width: 0; }
+.chip b { font: 700 .9rem/1.2 var(--f-body); }
+.chip span { font: 500 .7rem/1 var(--f-mono); letter-spacing: .08em; opacity: .8; }
+.deck-note { margin-top: .7rem; font: 500 .75rem/1.4 var(--f-mono); letter-spacing: .06em; color: var(--muted); }
+
+/* ---------- Sections ---------- */
+section { padding-block: clamp(4rem, 9vw, 7rem); }
+.sec-head { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 4rem; align-items: end; margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+.sec-head > div { display: grid; gap: 1rem; }
+
+/* Services */
+.services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+.service { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+.service img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.service-body { padding: 1.25rem 1.25rem 1.4rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; }
+.service-body p { font-size: .97rem; color: var(--muted); }
+.service-body a { margin-top: auto; padding-top: .4rem; font-weight: 700; font-size: .92rem; color: var(--gold-ink); text-decoration: none; }
+.service-body a:hover { text-decoration: underline; }
+.also { margin-top: 2rem; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.also span:first-child { font: 500 .78rem/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-right: .4rem; }
+.pill { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: .4rem .85rem; font-size: .9rem; font-weight: 600; }
+
+/* Projects */
+.projects { background: var(--panel); border-block: 1px solid var(--line); }
+.filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+.filters button {
+  font: 600 .9rem/1 var(--f-body); padding: .65rem 1.1rem; border-radius: 999px; cursor: pointer;
+  border: 1.5px solid var(--line); background: transparent; color: var(--text);
+}
+.filters button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.gallery figure { margin: 0; display: grid; gap: .55rem; }
+.gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 4px; transition: transform .3s; }
+.gallery figure:hover img { transform: scale(1.02); }
+.gallery figcaption { display: flex; justify-content: space-between; gap: .5rem; font-size: .92rem; font-weight: 600; }
+.gallery figcaption span { font: 500 .72rem/1.6 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.gallery-foot { margin-top: 2.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+.gallery-foot p { font: 500 .78rem/1.5 var(--f-mono); letter-spacing: .05em; color: var(--muted); }
+
+/* About */
+.about-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+.about-media { position: relative; }
+.about-media img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 6px; }
+.about-copy { display: grid; gap: 1.3rem; min-width: 0; }
+.tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+.values { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: .6rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.values h3 { font-size: 1.1rem; margin-bottom: .3rem; }
+.values p { font-size: .93rem; color: var(--muted); }
+
+/* Process: a dark band */
+.process { background: var(--band); color: var(--band-text); }
+.process h2, .process h3 { color: var(--band-text); }
+.process .eyebrow, .process .lead { color: var(--band-muted); }
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; list-style: none; padding: 0; margin: 0; counter-reset: step; }
+.steps li { counter-increment: step; border-top: 3px solid var(--gold); padding-top: 1.2rem; display: grid; gap: .55rem; align-content: start; }
+.steps li::before { content: "Step " counter(step, decimal-leading-zero); font: 500 .75rem/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
+.steps p { color: var(--band-muted); font-size: .97rem; }
+
+/* FAQ */
+.faq-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(2rem, 6vw, 5rem); }
+.faq-grid > div:first-child { display: grid; gap: 1rem; align-content: start; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; padding-block: 1.25rem; font: 700 1.12rem/1.35 var(--f-body); color: var(--ink); }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font: 500 1.4rem/1 var(--f-mono); color: var(--gold-ink); }
+.faq details[open] summary::after { content: "–"; }
+.faq details > div { padding-bottom: 1.3rem; color: var(--muted); display: grid; gap: .8rem; }
+.sheen { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.sheen th, .sheen td { text-align: left; padding: .5rem .7rem .5rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.sheen th { font: 500 .72rem/1.3 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.sheen td:first-child { font-weight: 700; color: var(--text); white-space: nowrap; }
+.table-scroll { overflow-x: auto; }
+
+/* Service area */
+.area { padding-block: 0; }
+.area-card { display: grid; grid-template-columns: 1.1fr 1fr; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.area-copy { padding: clamp(1.75rem, 5vw, 3.5rem); display: grid; gap: 1.2rem; align-content: center; min-width: 0; }
+.area-card img { width: 100%; height: 100%; min-height: 280px; object-fit: cover; }
+.towns { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+/* Contact */
+.contact-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+.contact-info { display: grid; gap: 1.5rem; min-width: 0; }
+.channels { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.channels li { display: flex; justify-content: space-between; gap: 1rem; padding-block: .9rem; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.channels span { font: 500 .75rem/1.8 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.channels a { font-weight: 700; color: var(--ink); text-decoration: none; overflow-wrap: anywhere; }
+.channels a:hover { color: var(--gold-ink); }
+.socials { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+form.estimate { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: clamp(1.25rem, 4vw, 2.25rem); display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.1rem; box-shadow: var(--shadow); }
+.estimate h3 { grid-column: 1 / -1; font-size: 1.9rem; font-stretch: 75%; text-transform: uppercase; }
+.field { display: grid; gap: .35rem; min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-weight: 700; font-size: .88rem; color: var(--ink); }
+.field input, .field select, .field textarea {
+  font: inherit; font-size: 1rem; color: var(--text); background: var(--paper);
+  border: 1.5px solid var(--line); border-radius: 4px; padding: .75rem .85rem; width: 100%;
+}
+.field textarea { min-height: 120px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 30%, transparent); }
+.consent { grid-column: 1 / -1; display: flex; gap: .6rem; align-items: flex-start; font-size: .88rem; color: var(--muted); }
+.consent input { margin-top: .25rem; accent-color: var(--gold); }
+.hp { position: absolute; left: -9999px; }
+.form-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.form-foot small { color: var(--muted); font-size: .82rem; max-width: 36ch; }
+.form-status { grid-column: 1 / -1; padding: .9rem 1rem; border-radius: 4px; background: color-mix(in srgb, var(--gold) 18%, var(--panel)); color: var(--text); font-weight: 600; }
+
+/* Footer */
+.site-footer { background: var(--band); color: var(--band-muted); padding-block: 3.5rem 2.5rem; margin-top: clamp(4rem, 9vw, 7rem); }
+.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
+.site-footer .brand { color: var(--band-text); }
+.site-footer .brand-name small { color: var(--band-muted); }
+.site-footer h4 { margin: 0 0 .8rem; font: 500 .75rem/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--band-text); }
+.site-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .45rem; }
+.site-footer a { color: var(--band-muted); text-decoration: none; }
+.site-footer a:hover { color: var(--gold); }
+.foot-base { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgb(255 255 255 / .12); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: .85rem; }
+
+/* Placeholder marker: anything in this style is sample data to replace */
+.ph { background: color-mix(in srgb, var(--gold) 22%, transparent); border-bottom: 1.5px dashed var(--gold-ink); padding-inline: .15em; border-radius: 2px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1080px) {
+  .nav-links { gap: 1.1rem; }
+  .nav-phone { display: none; }
+  .services-grid, .gallery { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }
+}
+@media (max-width: 860px) {
+  .menu-btn { display: inline-block; }
+  .nav { flex-wrap: wrap; }
+  .nav-links, .nav .btn { display: none; }
+  .nav.open .nav-links { display: grid; width: 100%; gap: 0; margin: 0 0 1rem; }
+  .nav.open .nav-links a { display: block; padding-block: .8rem; border-top: 1px solid var(--line); }
+  .hero-grid, .sec-head, .about-grid, .faq-grid, .area-card, .contact-grid, .foot-grid { grid-template-columns: 1fr; }
+  .hero-badge { left: .75rem; bottom: .75rem; }
+  .about-media img { aspect-ratio: 4 / 3; }
+  .deck { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .chip { padding: 2rem .6rem .7rem; }
+  .chip b { font-size: .78rem; }
+}
+@media (max-width: 560px) {
+  .services-grid, .steps, .values { grid-template-columns: 1fr; }
+  .gallery { grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .gallery figcaption { flex-direction: column; gap: 0; font-size: .85rem; }
+  .deck { grid-template-columns: 1fr 1fr; }
+  .deck .chip:last-child { grid-column: 1 / -1; }
+  form.estimate { grid-template-columns: 1fr; }
+  .brand-name b { font-size: 1.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn, .gallery img { transition: none; }
+  .btn:hover, .gallery figure:hover img { transform: none; }
+}
+</style>
 </head>
 <body>
-    <h1>¡Pronto estará lista la página web de asfalcem.com!</h1>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 64 64">
+    <path d="M6 56 L32 10 L58 56" fill="none" stroke="currentColor" stroke-width="9"/>
+    <path d="M9 43 Q15 37.5 26 38 Q40 38.5 53 34 Q60 31.5 63 33 Q62 37 55 39.6 Q42 44.2 28 45 Q17 45.6 9 43 Z" fill="#e0a526"/>
+    <path d="M42.6 42.4 L47.4 41.2 V50 Q47.4 53 45 53 Q42.6 53 42.6 50 Z" fill="#e0a526"/>
+  </symbol>
+</svg>
+
+<header class="site-header">
+  <nav class="wrap nav" id="nav" aria-label="Main">
+    <a class="brand" href="#top" aria-label="Asfalcem 1981 Painting, home">
+      <svg aria-hidden="true"><use href="#mark"/></svg>
+      <span class="brand-name"><b>ASFALCEM</b><small>1981 · PAINTING LLC</small></span>
+    </a>
+    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#area">Service Area</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-phone" href="tel:+15550101981">(555) 010-1981</a>
+    <a class="btn btn-gold" href="#contact">Free Estimate</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Residential &amp; commercial painters</span>
+          <h1>A fresh <span class="stroke">coat.</span><br>A fresh start.</h1>
+          <p class="lead">Interior and exterior painting for homes and businesses. Careful prep, clean lines, and a finish that holds up to the weather.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-gold arrow" href="#contact">Request an estimate</a>
+            <a class="btn btn-ghost" href="#projects">See our work</a>
+          </div>
+          <ul class="assurances">
+            <li>Free written estimates</li>
+            <li>Homes &amp; businesses</li>
+            <li>Protected, clean job sites</li>
+          </ul>
+        </div>
+        <div class="hero-media">
+          <img src="assets/img/hero-exterior.svg" alt="Freshly painted home exterior with white siding and a navy front door" width="800" height="600">
+          <div class="hero-badge"><b>2 coats</b><span>Minimum on every<br>exterior wall</span></div>
+        </div>
+      </div>
+
+      <div class="deck" aria-label="Popular color palette">
+        <div class="chip" style="--c:#14304a"><b>Harbor Navy</b><span>ASF-101</span></div>
+        <div class="chip" style="--c:#e0a526;--t:#14304a"><b>Falcon Gold</b><span>ASF-214</span></div>
+        <div class="chip" style="--c:#2f5d62"><b>Deep Spruce</b><span>ASF-330</span></div>
+        <div class="chip" style="--c:#b65f3f"><b>Canyon Clay</b><span>ASF-412</span></div>
+        <div class="chip" style="--c:#ecebe6;--t:#14304a"><b>Primer White</b><span>ASF-500</span></div>
+      </div>
+      <p class="deck-note">The Asfalcem house palette. Ask about free color consultation with your estimate.</p>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow" style="--chip:#14304a">What we do</span>
+          <h2>Painting that changes how a space feels.</h2>
+        </div>
+        <p class="lead">From one accent wall to a full commercial repaint, every job gets the same prep: patch, sand, caulk, prime, then two finish coats.</p>
+      </div>
+
+      <div class="services-grid">
+        <article class="service">
+          <img src="assets/img/interior-living.svg" alt="Living room with a deep green accent wall" width="800" height="600" loading="lazy">
+          <div class="service-body">
+            <h3>Interior Painting</h3>
+            <p>Walls, ceilings, trim and doors. Furniture moved and covered, floors protected, rooms left ready to use.</p>
+            <a class="arrow" href="#contact" data-service="Interior painting">Tell us about your project </a>
+          </div>
+        </article>
+        <article class="service">
+          <img src="assets/img/exterior-sage.svg" alt="Sage green house exterior with fresh white trim" width="800" height="600" loading="lazy">
+          <div class="service-body">
+            <h3>Exterior Painting</h3>
+            <p>Siding, stucco, brick, trim and fascia. Power washing and scraping first, with paint rated for sun and freeze-thaw.</p>
+            <a class="arrow" href="#contact" data-service="Exterior painting">Tell us about your project </a>
+          </div>
+        </article>
+        <article class="service">
+          <img src="assets/img/interior-kitchen.svg" alt="Kitchen with navy painted cabinets" width="800" height="600" loading="lazy">
+          <div class="service-body">
+            <h3>Residential Painting</h3>
+            <p>Whole-home repaints, move-in refreshes and cabinet refinishing, scheduled around the way your family lives.</p>
+            <a class="arrow" href="#contact" data-service="Residential painting">Tell us about your project </a>
+          </div>
+        </article>
+        <article class="service">
+          <img src="assets/img/commercial-storefront.svg" alt="Brick storefront with a navy sign band and green awning" width="800" height="600" loading="lazy">
+          <div class="service-body">
+            <h3>Commercial Painting</h3>
+            <p>Storefronts, offices, rentals and HOAs. Evening and weekend crews available to keep your doors open.</p>
+            <a class="arrow" href="#contact" data-service="Commercial painting">Tell us about your project </a>
+          </div>
+        </article>
+      </div>
+
+      <div class="also">
+        <span>Also available</span>
+        <span class="pill">Drywall repair</span>
+        <span class="pill">Cabinet refinishing</span>
+        <span class="pill">Deck &amp; fence staining</span>
+        <span class="pill">Power washing</span>
+        <span class="pill">Color consultation</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="projects">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow" style="--chip:#2f5d62">Recent projects</span>
+          <h2>See the details.</h2>
+        </div>
+        <div class="filters" role="group" aria-label="Filter projects">
+          <button type="button" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-filter="exterior" aria-pressed="false">Exteriors</button>
+          <button type="button" data-filter="interior" aria-pressed="false">Interiors</button>
+          <button type="button" data-filter="commercial" aria-pressed="false">Commercial</button>
+        </div>
+      </div>
+
+      <div class="gallery" id="gallery">
+        <figure data-tags="exterior"><img src="assets/img/hero-exterior.svg" alt="White cottage with navy door" loading="lazy" width="800" height="600"><figcaption>Cottage repaint <span>Exterior</span></figcaption></figure>
+        <figure data-tags="interior"><img src="assets/img/interior-living.svg" alt="Living room with spruce accent wall" loading="lazy" width="800" height="600"><figcaption>Spruce accent wall <span>Interior</span></figcaption></figure>
+        <figure data-tags="exterior"><img src="assets/img/exterior-sage.svg" alt="Sage green home with red door" loading="lazy" width="800" height="600"><figcaption>Sage siding &amp; trim <span>Exterior</span></figcaption></figure>
+        <figure data-tags="interior"><img src="assets/img/interior-kitchen.svg" alt="Navy kitchen cabinets" loading="lazy" width="800" height="600"><figcaption>Cabinet refinish <span>Interior</span></figcaption></figure>
+        <figure data-tags="exterior commercial"><img src="assets/img/commercial-storefront.svg" alt="Brick storefront with new sign band" loading="lazy" width="800" height="600"><figcaption>Main Street storefront <span>Commercial</span></figcaption></figure>
+        <figure data-tags="interior"><img src="assets/img/interior-bedroom.svg" alt="Bedroom with clay accent wall" loading="lazy" width="800" height="600"><figcaption>Clay bedroom wall <span>Interior</span></figcaption></figure>
+        <figure data-tags="exterior"><img src="assets/img/exterior-brick.svg" alt="Painted white brick home with black trim" loading="lazy" width="800" height="600"><figcaption>Painted brick <span>Exterior</span></figcaption></figure>
+        <figure data-tags="interior commercial"><img src="assets/img/commercial-office.svg" alt="Office with a branded feature wall" loading="lazy" width="800" height="600"><figcaption>Office feature wall <span>Commercial</span></figcaption></figure>
+      </div>
+
+      <div class="gallery-foot">
+        <p>Illustrations shown for layout. Real project photos coming soon.</p>
+        <a class="btn btn-ghost arrow" href="#contact">Start your project</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="about-media">
+        <img src="assets/img/roller.svg" alt="Paint roller laying down a fresh coat of navy" loading="lazy" width="800" height="600">
+      </div>
+      <div class="about-copy">
+        <span class="eyebrow" style="--chip:#b65f3f">About Asfalcem 1981</span>
+        <h2>Personal attention. A professional finish.</h2>
+        <p>Asfalcem 1981 LLC is a residential and commercial painting company serving <span class="ph">[City, State]</span> and nearby communities. The owner walks every job, writes every estimate, and checks the final coat before we call it done.</p>
+        <p>We keep crews small so the people who start your project are the people who finish it.</p>
+        <div class="tags">
+          <span class="pill">Homes &amp; businesses</span>
+          <span class="pill">Interiors &amp; exteriors</span>
+          <span class="pill">Premium paints</span>
+        </div>
+        <div class="values">
+          <div><h3>On time</h3><p>A start date and a finish date in writing.</p></div>
+          <div><h3>Clean</h3><p>Drop cloths down, debris out, every day.</p></div>
+          <div><h3>Covered</h3><p>Workmanship warranty on every project.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section id="process" class="process">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">How it works</span>
+          <h2>From first call to final coat.</h2>
+        </div>
+        <p class="lead">Four steps, no surprises. You'll know the price, the colors and the schedule before we open a can.</p>
+      </div>
+      <ol class="steps">
+        <li><h3>Tell us about your space</h3><p>Send a few photos and a short description through the form, by text or by phone.</p></li>
+        <li><h3>Walkthrough &amp; estimate</h3><p>We measure, check surfaces, talk colors and sheens, then send a written estimate.</p></li>
+        <li><h3>Prep &amp; paint</h3><p>Protect, repair and prime, then two finish coats with clean cut lines.</p></li>
+        <li><h3>Final walkthrough</h3><p>We inspect together, touch up anything you point out, and leave the space clean.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap faq-grid">
+      <div>
+        <span class="eyebrow" style="--chip:#e0a526">Questions</span>
+        <h2>Good to know.</h2>
+        <p class="lead">Don't see your question? Call or text and we'll answer it.</p>
+      </div>
+      <div class="faq">
+        <details open>
+          <summary>How do estimates work?</summary>
+          <div><p>Estimates are free. For most projects we visit in person, measure, and send a written estimate within 48 hours. Small interior jobs can often be quoted from photos.</p></div>
+        </details>
+        <details>
+          <summary>Which sheen should I choose?</summary>
+          <div>
+            <p>It depends on the room and how much cleaning the surface needs. Our usual recommendation:</p>
+            <div class="table-scroll">
+              <table class="sheen">
+                <thead><tr><th>Sheen</th><th>Best for</th></tr></thead>
+                <tbody>
+                  <tr><td>Flat / Matte</td><td>Ceilings, low-traffic rooms, hiding wall imperfections</td></tr>
+                  <tr><td>Eggshell</td><td>Living rooms, bedrooms, hallways</td></tr>
+                  <tr><td>Satin</td><td>Kitchens, bathrooms, kids' rooms, exterior siding</td></tr>
+                  <tr><td>Semi-gloss</td><td>Trim, doors, cabinets</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+        <details>
+          <summary>Can you do interior and exterior in one project?</summary>
+          <div><p>Yes. We can schedule both together and plan the exterior around the weather so your project keeps moving.</p></div>
+        </details>
+        <details>
+          <summary>How is pricing determined?</summary>
+          <div><p>Price depends on square footage, surface condition, the amount of prep and repair, number of colors, and the paint line you choose. Your estimate lists each item.</p></div>
+        </details>
+        <details>
+          <summary>Do I need to move my furniture?</summary>
+          <div><p>No. We move and cover furniture, protect floors and fixtures, and put everything back when we're done.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service area -->
+  <section id="area" class="area">
+    <div class="wrap">
+      <div class="area-card">
+        <div class="area-copy">
+          <span class="eyebrow" style="--chip:#2f5d62">Where we work</span>
+          <h2>Painting in <span class="ph">[City]</span> and surrounding areas.</h2>
+          <p>We serve homeowners, property managers and businesses within about 40 miles of <span class="ph">[City]</span>.</p>
+          <div class="towns">
+            <span class="pill"><span class="ph">[Town 1]</span></span>
+            <span class="pill"><span class="ph">[Town 2]</span></span>
+            <span class="pill"><span class="ph">[Town 3]</span></span>
+            <span class="pill"><span class="ph">[Town 4]</span></span>
+          </div>
+          <div class="hero-ctas">
+            <a class="btn btn-gold arrow" href="#contact">Check availability</a>
+            <a class="btn btn-ghost arrow" href="https://maps.google.com" target="_blank" rel="noopener">Find us on Google Maps</a>
+          </div>
+        </div>
+        <img src="assets/img/exterior-blue.svg" alt="Blue house with white trim and a gold front door" loading="lazy" width="800" height="600">
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="wrap contact-grid">
+      <div class="contact-info">
+        <span class="eyebrow">Contact</span>
+        <h2>Your next fresh start begins here.</h2>
+        <p class="lead">Tell us about the project and we'll get back to you within one business day.</p>
+        <ul class="channels">
+          <li><span>Phone</span><a href="tel:+15550101981"><span class="ph">(555) 010-1981</span></a></li>
+          <li><span>Text / WhatsApp</span><a href="sms:+15550101981"><span class="ph">(555) 010-1981</span></a></li>
+          <li><span>Email</span><a href="mailto:info@asfalcem.com">info@asfalcem.com</a></li>
+          <li><span>Hours</span><b>Mon–Sat · 7:00 am – 6:00 pm</b></li>
+        </ul>
+        <div class="socials">
+          <a class="pill" href="#" aria-label="Facebook (link coming soon)">Facebook</a>
+          <a class="pill" href="#" aria-label="Instagram (link coming soon)">Instagram</a>
+          <a class="pill" href="#" aria-label="TikTok (link coming soon)">TikTok</a>
+        </div>
+      </div>
+
+      <form class="estimate" id="estimate" novalidate>
+        <h3>Request an estimate</h3>
+        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="f-city">City</label><input id="f-city" name="city" autocomplete="address-level2" required></div>
+        <div class="field full">
+          <label for="f-service">Service</label>
+          <select id="f-service" name="service" required>
+            <option value="">Choose a service</option>
+            <option>Interior painting</option>
+            <option>Exterior painting</option>
+            <option>Residential painting</option>
+            <option>Commercial painting</option>
+            <option>Interior and exterior</option>
+            <option>Cabinets, drywall or other</option>
+          </select>
+        </div>
+        <div class="field full"><label for="f-msg">Tell us about your project</label><textarea id="f-msg" name="message" placeholder="Rooms or surfaces, approximate size, colors you have in mind, timeline…" required></textarea></div>
+        <div class="hp" aria-hidden="true"><label for="f-hp">Leave blank</label><input id="f-hp" name="company" tabindex="-1" autocomplete="off"></div>
+        <label class="consent" for="f-consent"><input id="f-consent" type="checkbox" required> I agree to be contacted by phone, text or email about my request.</label>
+        <div class="form-status" id="form-status" role="status" hidden></div>
+        <div class="form-foot">
+          <small>Sending a request doesn't confirm a booking or a price.</small>
+          <button class="btn btn-gold arrow" type="submit">Send request</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div style="display:grid;gap:1rem;align-content:start">
+        <a class="brand" href="#top" aria-label="Back to top">
+          <svg aria-hidden="true" style="color:var(--band-text)"><use href="#mark"/></svg>
+          <span class="brand-name"><b>ASFALCEM</b><small>1981 · PAINTING LLC</small></span>
+        </a>
+        <p>Residential and commercial painting in <span class="ph">[City, State]</span>.</p>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Interior painting</a></li>
+          <li><a href="#services">Exterior painting</a></li>
+          <li><a href="#services">Residential painting</a></li>
+          <li><a href="#services">Commercial painting</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© <span id="year">2026</span> Asfalcem 1981 LLC. All rights reserved.</span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Mobile menu
+  var nav = document.getElementById('nav');
+  var menuBtn = document.getElementById('menu-btn');
+  menuBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.textContent = open ? 'Close' : 'Menu';
+  });
+  nav.querySelectorAll('.nav-links a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      nav.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.textContent = 'Menu';
+    });
+  });
+
+  // Project filters
+  var buttons = document.querySelectorAll('.filters button');
+  var items = document.querySelectorAll('#gallery figure');
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var f = btn.dataset.filter;
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+      items.forEach(function (it) {
+        it.hidden = f !== 'all' && it.dataset.tags.split(' ').indexOf(f) === -1;
+      });
+    });
+  });
+
+  // Service cards preselect the form's service
+  var select = document.getElementById('f-service');
+  document.querySelectorAll('[data-service]').forEach(function (a) {
+    a.addEventListener('click', function () { select.value = a.dataset.service; });
+  });
+
+  // Estimate form (demo: not connected to a backend yet)
+  var form = document.getElementById('estimate');
+  var status = document.getElementById('form-status');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      var first = form.querySelector(':invalid');
+      status.hidden = false;
+      status.textContent = 'Please fill in every field and check the consent box.';
+      if (first) first.focus();
+      return;
+    }
+    var name = document.getElementById('f-name').value.trim().split(' ')[0];
+    status.hidden = false;
+    status.textContent = 'Thanks, ' + name + '. This preview form is not connected yet, so nothing was sent. It will deliver requests to info@asfalcem.com at launch.';
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
 </body>
 </html>
