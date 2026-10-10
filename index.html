@@ -243,14 +243,14 @@ legend span{font-weight:400;color:var(--muted)}
 /* Genesis AI assistant */
 .gen-btn{position:fixed;right:20px;bottom:20px;z-index:60;display:flex;align-items:center;gap:10px;padding:6px 18px 6px 6px;border:0;border-radius:999px;background:var(--navy);color:#fff;font:700 15px 'Archivo',sans-serif;letter-spacing:.02em;cursor:pointer;box-shadow:0 12px 30px rgba(8,22,35,.35);transition:transform .2s}
 .gen-btn:hover{transform:translateY(-2px);background:var(--navy-2)}
-.gen-btn img{width:48px;height:48px;border-radius:50%;border:2px solid var(--accent)}
+.gen-btn img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)}
 .gen-btn .dot{position:absolute;left:44px;top:8px;width:12px;height:12px;border-radius:50%;background:#3ccf6e;border:2px solid var(--navy)}
 .gen-btn small{display:block;font:500 12px 'Public Sans',sans-serif;color:#c8d3dd;letter-spacing:0}
 .gen-btn[aria-expanded="true"]{display:none}
 .gen-panel{position:fixed;right:20px;bottom:20px;z-index:61;width:390px;height:min(620px,calc(100vh - 40px));display:none;flex-direction:column;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(8,22,35,.35)}
 .gen-panel[data-open="true"]{display:flex}
 .gen-head{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--navy);color:#fff;border-bottom:3px solid var(--accent)}
-.gen-head img{width:44px;height:44px;border-radius:50%}
+.gen-head img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)}
 .gen-id{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.25}
 .gen-id b{font:800 18px 'Archivo',sans-serif}
 .gen-id span{font-size:13px;color:#c8d3dd}
@@ -258,7 +258,7 @@ legend span{font-weight:400;color:var(--muted)}
 .gen-close:hover{border-color:var(--accent);color:var(--accent)}
 .gen-body{flex:1;overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:14px;background:var(--soft)}
 .gen-msg{display:flex;gap:8px;align-items:flex-end;max-width:100%}
-.gen-msg img{width:30px;height:30px;border-radius:50%;flex:none}
+.gen-msg img{width:30px;height:30px;border-radius:50%;flex:none;object-fit:cover}
 .gen-txt{background:#fff;border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:10px 13px;font-size:15px;line-height:1.5;max-width:82%;overflow-wrap:anywhere}
 .gen-txt a{color:var(--navy);font-weight:600}
 .gen-msg.me{justify-content:flex-end}
@@ -775,12 +775,12 @@ legend span{font-weight:400;color:var(--muted)}
 
 <!-- Genesis AI assistant -->
 <button class="gen-btn" type="button" id="genOpen" aria-expanded="false" aria-controls="genPanel">
-  <img src="assets/genesis.svg" alt="" width="48" height="48"><span class="dot" aria-hidden="true"></span>
+  <img src="assets/genesis.png" alt="" width="48" height="48"><span class="dot" aria-hidden="true"></span>
   <span class="label">Ask Genesis<small>AI assistant · English / Español</small></span>
 </button>
 <section class="gen-panel" id="genPanel" role="dialog" aria-label="Chat with Genesis, AI assistant" data-open="false">
   <div class="gen-head">
-    <img src="assets/genesis.svg" alt="" width="44" height="44">
+    <img src="assets/genesis.png" alt="" width="44" height="44">
     <div class="gen-id"><b>Genesis</b><span>Asfalcem AI assistant · English / Español</span></div>
     <button class="gen-close" type="button" id="genClose" aria-label="Close chat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
@@ -802,7 +802,7 @@ legend span{font-weight:400;color:var(--muted)}
   var API_URL = 'https://black-water-4ccb.yankeevictor73.workers.dev';
   var ASSISTANT = 'genesis';
   var GREETING = "Hi! I'm Genesis, the virtual assistant for Constructora Asfalcem 1981. I can help with remodeling, facade repair, architectural plans, engineering, surveying and free estimates. How can I help you today?\n¿Prefiere español? ¡También hablo español!";
-  var AVATAR = 'assets/genesis.svg';
+  var AVATAR = 'assets/genesis.png';
 
   var btn = document.getElementById('genOpen');
   var panel = document.getElementById('genPanel');
