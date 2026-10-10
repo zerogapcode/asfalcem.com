@@ -11,7 +11,8 @@
 <meta property="og:description" content="Design, engineering and construction by one team. Free written estimates.">
 <meta property="og:url" content="https://asfalcem.com/">
 <meta property="og:image" content="https://asfalcem.com/assets/img/hero-home.jpg">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" as="image" href="assets/img/hero-home.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +27,7 @@
   "telephone": "+1-385-371-0680",
   "address": {"@type": "PostalAddress", "streetAddress": "357 S 200 E, Suite 310", "addressLocality": "Salt Lake City", "addressRegion": "UT", "postalCode": "84111", "addressCountry": "US"},
   "image": "https://asfalcem.com/assets/img/hero-home.jpg",
+  "logo": "https://asfalcem.com/assets/asfalcem.png",
   "knowsLanguage": ["en", "es"],
   "makesOffer": [
     "Home remodeling and additions", "Kitchen and bathroom remodeling", "Facade and exterior repair",
@@ -68,9 +70,9 @@ h1,h2,h3,p{margin:0}
 .site-header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
 .nav{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:84px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand-text{display:flex;flex-direction:column;line-height:1}
-.brand-name{font-size:26px;letter-spacing:.06em;color:var(--navy)}
-.brand-tag{font-family:'Archivo',sans-serif;font-weight:600;font-size:10.5px;letter-spacing:.22em;color:var(--muted);margin-top:5px}
+.brand img{height:68px;width:auto}
+.foot-logo{align-self:flex-start;background:#fff;border-radius:8px;padding:14px 18px}
+.foot-logo img{height:84px;width:auto}
 .nav-links{display:flex;gap:28px}
 .nav-links a{color:var(--ink);text-decoration:none;font-weight:600;font-size:15px;padding:12px 2px}
 .nav-links a:hover{color:var(--amber-ink)}
@@ -236,7 +238,7 @@ legend span{font-weight:400;color:var(--muted)}
   .topbar-left{display:none}
   .step{margin-right:0}
   .quick,.est-card,.callout{padding:24px}
-  .brand-name{font-size:22px}
+  .brand img{height:54px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -259,9 +261,8 @@ legend span{font-weight:400;color:var(--muted)}
 <!-- Header -->
 <header class="site-header" id="header">
   <div class="wrap nav">
-    <a class="brand" href="#top" aria-label="Asfalcem 1981 home">
-      <svg width="46" height="46" viewBox="0 0 66 64" aria-hidden="true"><path d="M6 56 L32 10 L58 56" fill="none" stroke="#0f2537" stroke-width="9"/><path d="M9 43 Q15 37.5 26 38 Q40 38.5 53 34 Q60 31.5 63 33 Q62 37 55 39.6 Q42 44.2 28 45 Q17 45.6 9 43 Z" fill="#e0a526"/></svg>
-      <span class="brand-text"><span class="disp brand-name">ASFALCEM</span><span class="brand-tag">1981 · BUILD · DESIGN · ENGINEER</span></span>
+    <a class="brand" href="#top">
+      <img src="assets/asfalcem.png" alt="Constructora Asfalcem 1981 LLC" width="138" height="68">
     </a>
     <nav class="nav-links" aria-label="Main">
       <a href="#services">Services</a>
@@ -628,10 +629,7 @@ legend span{font-weight:400;color:var(--muted)}
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <div style="display:flex;align-items:center;gap:12px">
-          <svg width="42" height="42" viewBox="0 0 66 64" aria-hidden="true"><path d="M6 56 L32 10 L58 56" fill="none" stroke="#ffffff" stroke-width="9"/><path d="M9 43 Q15 37.5 26 38 Q40 38.5 53 34 Q60 31.5 63 33 Q62 37 55 39.6 Q42 44.2 28 45 Q17 45.6 9 43 Z" fill="#e0a526"/></svg>
-          <span class="disp" style="font-size:24px;letter-spacing:.06em;color:#fff">ASFALCEM 1981</span>
-        </div>
+        <a class="foot-logo" href="#top"><img src="assets/asfalcem.png" alt="Constructora Asfalcem 1981 LLC" width="170" height="84" loading="lazy"></a>
         <p style="max-width:36ch">Design–build contractor for remodeling, exterior repair, architecture, engineering and surveying.</p>
       </div>
       <div>
