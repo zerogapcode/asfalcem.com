@@ -11,6 +11,20 @@
 <meta property="og:description" content="Design, engineering and construction by one team. Free written estimates.">
 <meta property="og:url" content="https://asfalcem.com/">
 <meta property="og:image" content="https://asfalcem.com/assets/img/hero-home.jpg">
+<script>
+// Language: Spanish if the browser's preferred language is Spanish (override for testing: ?lang=es / ?lang=en)
+(function () {
+  var q = /[?&]lang=(es|en)\b/.exec(location.search);
+  var pref = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+  window.ASF_ES = q ? q[1] === 'es' : /^es\b/i.test(pref);
+  if (window.ASF_ES) {
+    var d = document.documentElement;
+    d.lang = 'es';
+    d.classList.add('i18n');
+    setTimeout(function () { d.classList.remove('i18n'); }, 1500);
+  }
+})();
+</script>
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" as="image" href="assets/img/hero-home.jpg">
@@ -40,6 +54,7 @@
 :root{--accent:#e0a526;--navy:#0f2537;--navy-2:#173a55;--deep:#0a1a28;--ink:#142231;--body:#3d4d5c;--muted:#4f6070;--line:#dfe4ea;--soft:#f2f4f6;--amber-ink:#8a5d00}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:116px}
+html.i18n body{visibility:hidden}
 body{margin:0;background:#fff;font-family:'Public Sans',system-ui,sans-serif;color:var(--ink);line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
 a{color:var(--navy)}a:hover{color:var(--amber-ink)}
@@ -97,6 +112,7 @@ h1,h2,h3,p{margin:0}
 .hero-copy{display:flex;flex-direction:column;gap:26px}
 .hero h1{font-size:clamp(42px,5.4vw,76px);color:#fff}
 .hero h1 em{font-style:normal;color:var(--accent)}
+html[lang="es"] .hero h1{font-size:clamp(38px,4.5vw,64px)}
 .hero-lead{font-size:19px;color:#dbe3ea;max-width:56ch}
 .btn-row{display:flex;gap:14px;flex-wrap:wrap}
 .hero-points{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:10px 26px;font-weight:600;font-size:15px}
@@ -711,7 +727,7 @@ legend span{font-weight:400;color:var(--muted)}
   function setMenu(open) {
     header.classList.toggle('open', open);
     menuBtn.setAttribute('aria-expanded', String(open));
-    menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menuBtn.setAttribute('aria-label', window.ASF_ES ? (open ? 'Cerrar menú' : 'Abrir menú') : (open ? 'Close menu' : 'Open menu'));
   }
   menuBtn.addEventListener('click', function () { setMenu(!header.classList.contains('open')); });
   document.querySelectorAll('#mobile-nav a').forEach(function (a) {
@@ -759,14 +775,16 @@ legend span{font-weight:400;color:var(--muted)}
       var subject = form.dataset.subject + ' — ' + form.querySelector('[name="Name"]').value.trim();
       window.location.href = 'mailto:info@asfalcem.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(lines.join('\n'));
       status.hidden = false;
-      status.textContent = 'Your email app should open with your request ready — just press Send. If it doesn’t, email us at info@asfalcem.com.';
+      status.textContent = window.ASF_ES
+        ? 'Su aplicación de correo debería abrirse con la solicitud lista — solo presione Enviar. Si no se abre, escríbanos a info@asfalcem.com.'
+        : 'Your email app should open with your request ready — just press Send. If it doesn’t, email us at info@asfalcem.com.';
     });
   }
   wire(document.getElementById('quick-form'));
   wire(document.getElementById('estimate-form'), function () {
     var picked = [];
     chips.forEach(function (c) { if (c.getAttribute('aria-pressed') === 'true') picked.push(c.textContent); });
-    return picked.length ? 'Services: ' + picked.join(', ') : '';
+    return picked.length ? (window.ASF_ES ? 'Servicios: ' : 'Services: ') + picked.join(', ') : '';
   });
 
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -801,7 +819,10 @@ legend span{font-weight:400;color:var(--muted)}
 (function () {
   var API_URL = 'https://black-water-4ccb.yankeevictor73.workers.dev';
   var ASSISTANT = 'genesis';
-  var GREETING = "Hi! I'm Genesis, the virtual assistant for Constructora Asfalcem 1981. I can help with remodeling, facade repair, architectural plans, engineering, surveying and free estimates. How can I help you today?\n¿Prefiere español? ¡También hablo español!";
+  var ES = !!window.ASF_ES;
+  var GREETING = ES
+    ? "¡Hola! Soy Genesis, la asistente virtual de Constructora Asfalcem 1981. Puedo ayudarle con remodelaciones, reparación de fachadas, planos arquitectónicos, ingeniería, topografía y presupuestos gratis. ¿En qué le puedo ayudar hoy?\nPrefer English? I speak English too!"
+    : "Hi! I'm Genesis, the virtual assistant for Constructora Asfalcem 1981. I can help with remodeling, facade repair, architectural plans, engineering, surveying and free estimates. How can I help you today?\n¿Prefiere español? ¡También hablo español!";
   var AVATAR = 'assets/genesis.png';
 
   var btn = document.getElementById('genOpen');
@@ -846,7 +867,7 @@ legend span{font-weight:400;color:var(--muted)}
   function typing() {
     var row = document.createElement('div');
     row.className = 'gen-msg';
-    row.innerHTML = '<img src="' + AVATAR + '" alt="" width="30" height="30"><div class="gen-txt"><span class="gen-dots" aria-label="Genesis is typing"><i></i><i></i><i></i></span></div>';
+    row.innerHTML = '<img src="' + AVATAR + '" alt="" width="30" height="30"><div class="gen-txt"><span class="gen-dots" aria-label="' + (ES ? 'Genesis está escribiendo' : 'Genesis is typing') + '"><i></i><i></i><i></i></span></div>';
     log.appendChild(row);
     log.scrollTop = log.scrollHeight;
     return row;
@@ -909,10 +930,298 @@ legend span{font-weight:400;color:var(--muted)}
       })
       .catch(function () {
         wait.remove();
-        add("Sorry, I couldn't connect right now. Please call or text us at (385) 371-0680 or email info@asfalcem.com.\nLo siento, no pude conectarme. Llámenos al (385) 371-0680.", false);
+        add(ES
+          ? "Lo siento, no pude conectarme en este momento. Llámenos o envíenos un texto al (385) 371-0680, o escríbanos a info@asfalcem.com."
+          : "Sorry, I couldn't connect right now. Please call or text us at (385) 371-0680 or email info@asfalcem.com.\nLo siento, no pude conectarme. Llámenos al (385) 371-0680.", false);
       })
       .then(function () { setBusy(false); input.focus(); });
   }
+})();
+</script>
+
+<script>
+// Spanish translation, applied when the browser language is Spanish (see ASF_ES in <head>).
+// Keys are the exact English text on the page; when English copy changes, update its key here too.
+(function () {
+  if (!window.ASF_ES) return;
+  var ES = {
+    // Top bar & header
+    'Serving Salt Lake City, UT & surrounding counties': 'Servimos a Salt Lake City, UT y condados cercanos',
+    'Hablamos Español': 'Hablamos español e inglés',
+    'Main': 'Principal',
+    'Mobile': 'Móvil',
+    'Services': 'Servicios',
+    'How we work': 'Cómo trabajamos',
+    'Projects': 'Proyectos',
+    'About': 'Nosotros',
+    'FAQ': 'Preguntas',
+    'Call for a free estimate': 'Llame para un presupuesto gratis',
+    'Free estimate': 'Presupuesto gratis',
+    'Open menu': 'Abrir menú',
+    'Call now': 'Llamar ahora',
+
+    // Hero & quick form
+    'Design–build contractor · Salt Lake City, UT': 'Contratista de diseño y construcción · Salt Lake City, UT',
+    'Remodel, repair & build —': 'Remodelamos, reparamos y construimos —',
+    'designed and engineered': 'con diseño e ingeniería',
+    'by one team.': 'de un solo equipo.',
+    'Home remodeling, facade repair, architectural plans, structural engineering and land surveying for homeowners and property owners. One contract, one project manager, from the first drawing to the final inspection.': 'Remodelación de viviendas, reparación de fachadas, planos arquitectónicos, ingeniería estructural y topografía para dueños de casas y propiedades. Un solo contrato y un solo gerente de proyecto, desde el primer plano hasta la inspección final.',
+    'Get my free estimate': 'Quiero mi presupuesto gratis',
+    'See our work': 'Ver nuestros trabajos',
+    'Permits handled for you': 'Nosotros tramitamos los permisos',
+    'Written, line-item estimates': 'Presupuestos detallados por escrito',
+    'English & Español': 'Español e inglés',
+    'Quick estimate request': 'Solicitud rápida de presupuesto',
+    'Get a free estimate': 'Pida su presupuesto gratis',
+    'No cost, no obligation. We reply within 1 business day.': 'Sin costo ni compromiso. Respondemos en 1 día hábil.',
+    'Full name': 'Nombre completo',
+    'Phone': 'Teléfono',
+    'ZIP code': 'Código postal',
+    'What do you need?': '¿Qué necesita?',
+    'Home remodel or addition': 'Remodelación o ampliación de casa',
+    'Kitchen or bathroom remodel': 'Remodelación de cocina o baño',
+    'Facade / exterior repair': 'Reparación de fachada / exterior',
+    'Roofing or storm damage': 'Techos o daños por tormenta',
+    'Architectural plans & permits': 'Planos arquitectónicos y permisos',
+    'Structural / civil engineering': 'Ingeniería estructural / civil',
+    'Land survey or site work': 'Topografía o preparación de terreno',
+    'Commercial build-out': 'Adecuación de locales comerciales',
+    'Request my estimate': 'Solicitar mi presupuesto',
+    'Or call (385) 371-0680': 'O llame al (385) 371-0680',
+
+    // Services
+    'What we do': 'Lo que hacemos',
+    'Everything your property needs — from the first sketch to the final walkthrough.': 'Todo lo que su propiedad necesita — desde el primer boceto hasta la entrega final.',
+    'Most contractors make you hire an architect, an engineer and a surveyor separately. We coordinate all of it, so your project moves faster and nothing falls through the cracks.': 'La mayoría de los contratistas le hacen contratar por separado a un arquitecto, un ingeniero y un topógrafo. Nosotros coordinamos todo, para que su proyecto avance más rápido y nada quede en el aire.',
+    'Carpenter framing a home addition': 'Carpintero armando la estructura de una ampliación',
+    '01 · Residential': '01 · Residencial',
+    'Home Remodeling & Additions': 'Remodelación y ampliaciones',
+    'Whole-home renovations, room and second-story additions, ADUs and garage conversions.': 'Renovaciones completas, ampliaciones de habitaciones y segundos pisos, ADUs y conversiones de garaje.',
+    'Open-concept & load-bearing wall removal': 'Espacios abiertos y retiro de muros de carga',
+    'Flooring, drywall, trim & paint': 'Pisos, drywall, molduras y pintura',
+    'Remodeled white kitchen with island': 'Cocina blanca remodelada con isla',
+    '02 · Residential': '02 · Residencial',
+    'Kitchen & Bathroom Remodels': 'Remodelación de cocinas y baños',
+    'Layouts that work, materials that last, and plumbing and electrical done to code.': 'Distribuciones funcionales, materiales duraderos, y plomería y electricidad según el código.',
+    'Cabinets, countertops & tile': 'Gabinetes, encimeras y azulejos',
+    'Walk-in showers & aging-in-place': 'Duchas a ras de piso y adaptaciones para adultos mayores',
+    'Crew painting and repairing a home facade on ladders': 'Equipo pintando y reparando la fachada de una casa',
+    'Facade & Exterior Repair': 'Reparación de fachadas y exteriores',
+    'Restore curb appeal and stop water before it becomes structural damage.': 'Devuélvale la buena imagen a su propiedad y detenga el agua antes de que cause daños estructurales.',
+    'Stucco, siding & masonry repair': 'Reparación de estuco, revestimiento y mampostería',
+    'Waterproofing, windows & exterior paint': 'Impermeabilización, ventanas y pintura exterior',
+    'Roofer inspecting a shingle roof': 'Techador inspeccionando un techo de tejas',
+    'Roofing & Storm Damage': 'Techos y daños por tormenta',
+    'Repairs and full replacements, documented for your insurance claim.': 'Reparaciones y reemplazos completos, documentados para su reclamo al seguro.',
+    'Shingle, tile & metal roofs': 'Techos de tejas asfálticas, teja y metal',
+    'Leak repair, gutters & soffits': 'Reparación de goteras, canaletas y aleros',
+    'Architect drafting floor plans': 'Arquitecto dibujando planos',
+    '05 · Design': '05 · Diseño',
+    'Architectural Plans & Permits': 'Planos arquitectónicos y permisos',
+    'Permit-ready drawings that pass plan review — and we submit them for you.': 'Planos listos para permiso que pasan la revisión municipal — y nosotros los presentamos por usted.',
+    'As-builts, floor plans & 3D renderings': 'Levantamientos, planos de planta y renders 3D',
+    'Permit sets & HOA submittals': 'Planos para permisos y solicitudes a la HOA',
+    'Engineers reviewing a construction site': 'Ingenieros revisando una obra',
+    '06 · Engineering': '06 · Ingeniería',
+    'Structural & Civil Engineering': 'Ingeniería estructural y civil',
+    'Calculations and sealed drawings by a licensed Professional Engineer.': 'Cálculos y planos sellados por un Ingeniero Profesional (PE) con licencia.',
+    'Beam sizing & foundation inspections': 'Cálculo de vigas e inspección de cimientos',
+    'Grading, drainage & site plans': 'Nivelación, drenaje y planos de sitio',
+    'Excavators preparing a building site': 'Excavadoras preparando un terreno',
+    '07 · Site': '07 · Terreno',
+    'Land Surveying & Site Work': 'Topografía y preparación de terreno',
+    'Know your lot before you build — then we prepare it.': 'Conozca su terreno antes de construir — y luego nosotros lo preparamos.',
+    'Boundary & topographic surveys': 'Levantamientos de linderos y topográficos',
+    'FEMA elevation certificates & excavation': 'Certificados de elevación FEMA y excavación',
+    'Construction team on a commercial slab': 'Equipo de construcción en una losa comercial',
+    '08 · Commercial': '08 · Comercial',
+    'Commercial Build-Outs': 'Adecuación de locales comerciales',
+    'Tenant improvements for offices, retail and restaurants, on schedule.': 'Adecuaciones para oficinas, tiendas y restaurantes, a tiempo.',
+    'Interior build-outs & ADA upgrades': 'Acabados interiores y adaptaciones ADA',
+    'Storefront & facade renovations': 'Renovación de fachadas y vitrinas',
+
+    // Process
+    'One team. One contract. From blueprint to final inspection.': 'Un equipo. Un contrato. Del plano a la inspección final.',
+    'Site visit & estimate': 'Visita y presupuesto',
+    'We walk the property, listen to your goals and give you a written, line-item estimate.': 'Recorremos la propiedad, escuchamos lo que quiere lograr y le entregamos un presupuesto detallado por escrito.',
+    'Survey, design & engineering': 'Topografía, diseño e ingeniería',
+    'Measurements or a topographic survey, architectural drawings and sealed engineering where code requires it.': 'Medidas o levantamiento topográfico, planos arquitectónicos e ingeniería sellada donde el código lo exige.',
+    'Permits & approvals': 'Permisos y aprobaciones',
+    'We prepare and submit the permit set, answer plan-review comments and handle HOA approvals.': 'Preparamos y presentamos los planos para el permiso, respondemos las observaciones de la revisión y gestionamos la aprobación de la HOA.',
+    'Build & final inspection': 'Construcción e inspección final',
+    'Your project manager runs the job, schedules inspections and walks the finished work with you.': 'Su gerente de proyecto dirige la obra, programa las inspecciones y revisa con usted el trabajo terminado.',
+    'Not sure if your project needs an architect, an engineer or a permit?': '¿No sabe si su proyecto necesita arquitecto, ingeniero o permiso?',
+    'Ask us — the consultation is free.': 'Pregúntenos — la consulta es gratis.',
+    'Book a site visit': 'Agendar una visita',
+
+    // Projects
+    'Recent projects': 'Proyectos recientes',
+    'Work that adds value to your property.': 'Trabajos que aumentan el valor de su propiedad.',
+    'Filter projects': 'Filtrar proyectos',
+    'All': 'Todos',
+    'Remodeling': 'Remodelación',
+    'Kitchen & Bath': 'Cocina y baño',
+    'Exterior & Facade': 'Exterior y fachada',
+    'New Construction': 'Obra nueva',
+    'New construction': 'Obra nueva',
+    'Modern custom residence': 'Residencia moderna a medida',
+    'Architectural plans · structural design · permits · build': 'Planos arquitectónicos · diseño estructural · permisos · construcción',
+    'Bright remodeled kitchen': 'Cocina luminosa remodelada',
+    'Kitchen remodel': 'Remodelación de cocina',
+    'Bright chef’s kitchen': 'Cocina luminosa de chef',
+    'Custom cabinets · stone counters · relocated plumbing': 'Gabinetes a medida · encimeras de piedra · plomería reubicada',
+    'Home with new siding and paint': 'Casa con revestimiento y pintura nuevos',
+    'Facade & siding': 'Fachada y revestimiento',
+    'Siding replacement & repaint': 'Cambio de revestimiento y pintura',
+    'Rot repair · new siding · trim & exterior paint': 'Reparación de madera podrida · revestimiento nuevo · molduras y pintura exterior',
+    'Open-concept living room': 'Sala de concepto abierto',
+    'Whole-home remodel': 'Remodelación completa',
+    'Open-concept living space': 'Sala de concepto abierto',
+    'Load-bearing wall removal · engineered beam · flooring': 'Retiro de muro de carga · viga calculada · pisos',
+    'Two-story home with pool': 'Casa de dos pisos con piscina',
+    'Survey · site plan · foundation · full build': 'Topografía · plano de sitio · cimientos · construcción completa',
+    'Renovated bathroom': 'Baño renovado',
+    'Bathroom remodel': 'Remodelación de baño',
+    'Classic bath renovation': 'Renovación de baño clásico',
+    'Tile · fixtures · ventilation upgrade': 'Azulejos · accesorios · mejora de ventilación',
+    'Restored home with wraparound porch': 'Casa restaurada con porche envolvente',
+    'Exterior restoration': 'Restauración exterior',
+    'Porch & facade restoration': 'Restauración de porche y fachada',
+    'Porch rebuild · roofing · exterior paint': 'Reconstrucción de porche · techo · pintura exterior',
+    'Home with second-story addition and pool deck': 'Casa con ampliación de segundo piso y terraza de piscina',
+    'Addition & outdoor living': 'Ampliación y área exterior',
+    'Second-story addition': 'Ampliación de segundo piso',
+    'Engineering · addition · pool deck': 'Ingeniería · ampliación · terraza de piscina',
+
+    // About
+    'Crew member cutting lumber on site': 'Trabajador cortando madera en la obra',
+    'Why Asfalcem': 'Por qué Asfalcem',
+    'Built right the first time — and backed in writing.': 'Bien hecho desde la primera vez — y respaldado por escrito.',
+    'Asfalcem 1981 LLC brings design, engineering and construction together under one roof.': 'Asfalcem 1981 LLC reúne diseño, ingeniería y construcción bajo un mismo techo.',
+    'Licensed general contractor': 'Contratista general con licencia',
+    'Fully insured, with permits pulled under our license.': 'Totalmente asegurados, con permisos tramitados bajo nuestra licencia.',
+    'Clear, fixed-scope pricing': 'Precios claros y alcance definido',
+    'Line-item estimates. No surprise change orders.': 'Presupuestos detallados. Sin cobros extra sorpresa.',
+    'One project manager': 'Un solo gerente de proyecto',
+    'A single point of contact with weekly progress updates.': 'Un único contacto, con informes de avance cada semana.',
+    'Clean, protected jobsites': 'Obras limpias y protegidas',
+    'Dust control, floor protection and daily clean-up.': 'Control de polvo, protección de pisos y limpieza diaria.',
+    'Bilingual crews': 'Equipos bilingües',
+    'We work with you in English or Español.': 'Trabajamos con usted en español o en inglés.',
+    'Code-compliant, inspected work': 'Trabajo inspeccionado y conforme al código',
+    'Every phase passes city inspection before we move on.': 'Cada etapa pasa la inspección municipal antes de continuar.',
+
+    // Insurance claims
+    'Insurance claims': 'Reclamos al seguro',
+    'Storm, fire or water damage?': '¿Daños por tormenta, incendio o agua?',
+    'We work directly with your insurance adjuster.': 'Trabajamos directamente con el ajustador de su seguro.',
+    'Photo-documented damage reports, detailed repair estimates and emergency tarping or board-up while your claim is processed.': 'Informes de daños con fotos, presupuestos de reparación detallados y protección de emergencia con lonas o tablas mientras se procesa su reclamo.',
+    'Request a damage inspection →': 'Solicitar inspección de daños →',
+
+    // FAQ
+    'Questions homeowners ask us.': 'Lo que nos preguntan los propietarios.',
+    'Don’t see yours? Call us or send a message — we answer the same business day.': '¿No ve su pregunta? Llámenos o escríbanos — respondemos el mismo día hábil.',
+    'Do you handle the permits?': '¿Ustedes tramitan los permisos?',
+    'Yes. We prepare the drawings, submit the permit application, answer plan-review comments and schedule every city inspection. Permit fees are listed separately on your estimate.': 'Sí. Preparamos los planos, presentamos la solicitud de permiso, respondemos las observaciones de la revisión y programamos cada inspección municipal. Las tarifas del permiso aparecen por separado en su presupuesto.',
+    'Does my remodel need an architect or engineer?': '¿Mi remodelación necesita arquitecto o ingeniero?',
+    'Anything that changes the structure — removing a load-bearing wall, adding a room or second story, or a new foundation — usually needs stamped drawings. We tell you at the site visit and coordinate the design so you don’t have to hire separately.': 'Todo lo que cambie la estructura — quitar un muro de carga, agregar una habitación o un segundo piso, o hacer cimientos nuevos — normalmente requiere planos sellados. Se lo indicamos en la visita y coordinamos el diseño para que no tenga que contratar por separado.',
+    'What is a topographic or boundary survey, and do I need one?': '¿Qué es un levantamiento topográfico o de linderos, y lo necesito?',
+    'A boundary survey marks your property lines; a topographic survey maps grades and elevations. Most cities require one for additions, new homes, fences near lot lines, pools and drainage work.': 'Un levantamiento de linderos marca los límites de su propiedad; uno topográfico registra pendientes y elevaciones. La mayoría de las ciudades lo exige para ampliaciones, casas nuevas, cercas junto al lindero, piscinas y obras de drenaje.',
+    'Do you work with insurance claims?': '¿Trabajan con reclamos al seguro?',
+    'Yes. We document the damage, prepare a detailed estimate for your adjuster and can make emergency repairs to prevent further damage while the claim is reviewed.': 'Sí. Documentamos los daños, preparamos un presupuesto detallado para su ajustador y podemos hacer reparaciones de emergencia para evitar más daños mientras se revisa el reclamo.',
+    'How long does a kitchen or bathroom remodel take?': '¿Cuánto tarda una remodelación de cocina o baño?',
+    'It depends on scope and permit timelines. You’ll get a written schedule with your estimate, and your project manager updates it every week.': 'Depende del alcance y de los tiempos del permiso. Recibirá un cronograma por escrito junto con su presupuesto, y su gerente de proyecto lo actualiza cada semana.',
+
+    // Estimate
+    'Tell us about your project.': 'Cuéntenos sobre su proyecto.',
+    'We’ll call you within one business day to schedule a free site visit and give you a written estimate.': 'Le llamaremos en un día hábil para agendar una visita gratis y entregarle un presupuesto por escrito.',
+    'Call or text': 'Llame o envíe un texto',
+    'Email': 'Correo',
+    'Office': 'Oficina',
+    'Office hours:': 'Horario de oficina:',
+    '[Mon–Fri 8am–6pm · Sat 9am–1pm]': '[Lun–Vie 8am–6pm · Sáb 9am–1pm]',
+    'Estimate request': 'Solicitud de presupuesto',
+    'Services needed': 'Servicios que necesita',
+    '(choose all that apply)': '(elija todos los que apliquen)',
+    'Remodel / addition': 'Remodelación / ampliación',
+    'Kitchen or bath': 'Cocina o baño',
+    'Facade / exterior': 'Fachada / exterior',
+    'Roofing': 'Techos',
+    'Architectural plans': 'Planos arquitectónicos',
+    'Engineering': 'Ingeniería',
+    'Survey / site work': 'Topografía / terreno',
+    'Commercial': 'Comercial',
+    'Project ZIP code': 'Código postal del proyecto',
+    'Property type': 'Tipo de propiedad',
+    'Single-family home': 'Casa unifamiliar',
+    'Townhome / condo': 'Townhome / condominio',
+    'Multi-family / rental': 'Multifamiliar / alquiler',
+    'Vacant lot': 'Terreno baldío',
+    'When do you want to start?': '¿Cuándo quiere comenzar?',
+    'As soon as possible': 'Lo antes posible',
+    'In 1–3 months': 'En 1–3 meses',
+    'In 3–6 months': 'En 3–6 meses',
+    'Just planning / budgeting': 'Solo estoy planificando / presupuestando',
+    'Project details': 'Detalles del proyecto',
+    'What would you like to build, repair or remodel? Approximate size, materials, any damage…': '¿Qué desea construir, reparar o remodelar? Tamaño aproximado, materiales, daños…',
+    'Send my estimate request': 'Enviar mi solicitud',
+    'Submitting opens your email app with your request addressed to info@asfalcem.com — just press Send. We never share your information.': 'Al enviar se abrirá su aplicación de correo con la solicitud dirigida a info@asfalcem.com — solo presione Enviar. Nunca compartimos su información.',
+
+    // Footer
+    'Design–build contractor for remodeling, exterior repair, architecture, engineering and surveying.': 'Contratista de diseño y construcción: remodelación, reparación exterior, arquitectura, ingeniería y topografía.',
+    'Residential': 'Residencial',
+    'Home remodeling & additions': 'Remodelación y ampliaciones',
+    'Kitchen & bath': 'Cocina y baño',
+    'Facade & exterior repair': 'Reparación de fachadas y exteriores',
+    'Roofing & storm damage': 'Techos y daños por tormenta',
+    'Design & engineering': 'Diseño e ingeniería',
+    'Structural & civil engineering': 'Ingeniería estructural y civil',
+    'Land surveying & site work': 'Topografía y preparación de terreno',
+    'Commercial build-outs': 'Adecuación de locales comerciales',
+    'Contact': 'Contacto',
+    'Get a free estimate →': 'Pida su presupuesto gratis →',
+    'Asfalcem 1981 LLC. All rights reserved.': 'Asfalcem 1981 LLC. Todos los derechos reservados.',
+    'asfalcem.com · Hablamos Español': 'asfalcem.com · Hablamos español e inglés',
+
+    // Genesis
+    'Ask Genesis': 'Pregúntele a Genesis',
+    'AI assistant · English / Español': 'Asistente IA · Español / English',
+    'Chat with Genesis, AI assistant': 'Chat con Genesis, asistente de IA',
+    'Asfalcem AI assistant · English / Español': 'Asistente IA de Asfalcem · Español / English',
+    'Close chat': 'Cerrar chat',
+    'What services do you offer?': '¿Qué servicios ofrecen?',
+    'I\'d like a free estimate': 'Quisiera un presupuesto gratis',
+    '¿Me puedes atender en español?': '¿Dónde está su oficina?',
+    'Español': 'Oficina',
+    'Type your question…': 'Escriba su pregunta…',
+    'Your message': 'Su mensaje',
+    'Send message': 'Enviar mensaje',
+    'Genesis is an AI assistant and can make mistakes. For quotes, call (385) 371-0680.': 'Genesis es una asistente de IA y puede cometer errores. Para cotizaciones, llame al (385) 371-0680.'
+  };
+  var ATTRS = ['alt', 'placeholder', 'aria-label', 'data-q', 'data-subject'];
+
+  function tr(s) {
+    var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(s);
+    var hit = ES[m[2].replace(/\s+/g, ' ')];
+    return hit ? m[1] + hit + m[3] : s;
+  }
+
+  var walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode: function (n) {
+      var p = n.parentNode.nodeName;
+      return p === 'SCRIPT' || p === 'STYLE' ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  for (var n; (n = walk.nextNode());) n.nodeValue = tr(n.nodeValue);
+
+  document.querySelectorAll('[' + ATTRS.join('],[') + ']').forEach(function (el) {
+    ATTRS.forEach(function (a) { if (el.hasAttribute(a)) el.setAttribute(a, tr(el.getAttribute(a))); });
+  });
+
+  document.title = 'Asfalcem 1981 | Remodelación, reparación de fachadas, arquitectura e ingeniería';
+  var desc = document.querySelector('meta[name="description"]');
+  if (desc) desc.content = 'Asfalcem 1981 LLC es un contratista de diseño y construcción: remodelación de casas, cocinas y baños, reparación de fachadas y exteriores, techos, planos arquitectónicos y permisos, ingeniería estructural y topografía. Presupuestos gratis. We speak English.';
+  document.documentElement.classList.remove('i18n');
 })();
 </script>
 </body>
